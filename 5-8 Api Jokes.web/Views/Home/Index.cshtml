@@ -1,0 +1,32 @@
+﻿@using _5_8_Api_Jokes.data
+@model Joke
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 well" style="text-align:center">
+
+        <h3>@Model.SetUp</h3>
+        <br />
+        <h4>@Model.Punchline</h4>
+        <br />
+
+        <button class="btn btn-primary btn-like" id="like-@Model.DataId" data-id="@Model.DataId"
+                @(Model.UsersLikedJokes.Any(ulj => ulj.Liked == true && ulj.User.Email == User.Identity.Name) ? "disabled" : "")>
+            Like
+        </button>
+
+        <span>Likes: </span>
+        <span id="likes-@Model.DataId">@Model.UsersLikedJokes.Count(l => l.Liked == true)</span>
+
+        <button class="btn btn-danger btn-dislike" id="dislike-@Model.DataId" data-id="@Model.DataId"
+                @(Model.UsersLikedJokes.Any(ulj => ulj.Liked == false && ulj.User.Email == User.Identity.Name) ? "disabled" : "")>
+            Dislike
+        </button>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/js/likes.js"></script>
+}
+

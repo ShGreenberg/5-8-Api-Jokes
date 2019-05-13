@@ -1,0 +1,36 @@
+﻿@using _5_8_Api_Jokes.data
+@model IEnumerable<Joke>
+@{
+    ViewData["Title"] = "AllJokes";
+}
+
+<h2>AllJokes</h2>
+<div class="container">
+    @foreach (Joke j in Model)
+    {
+    <div class="col-md-4 col-md-offset-1 well" style="height: 300px; text-align:center">
+        <h3>@j.SetUp</h3>
+        <br />
+        <h4>@j.Punchline</h4>
+        <br />
+        <button class="btn btn-primary btn-like" id="like-@j.DataId" data-id="@j.DataId"
+            @(j.UsersLikedJokes.Any(ulj => (ulj.Liked == true || (ulj.Liked == false && ulj.Date.AddMinutes(2) < DateTime.Now))
+            && ulj.User.Email == User.Identity.Name  ) ? "disabled" : "")>
+            Like
+        </button>
+        <span>Likes: </span>
+        <span id="likes-@j.DataId">@(j.UsersLikedJokes != null ? j.UsersLikedJokes.Count(usl => usl.Liked == true) : 0)</span>
+        <button class="btn btn-danger btn-dislike" id="dislike-@j.DataId" data-id="@j.DataId"
+            @(j.UsersLikedJokes.Any(ulj => (ulj.Liked == false || (ulj.Liked == true && ulj.Date.AddMinutes(2) < DateTime.Now))
+            && ulj.User.Email == User.Identity.Name) ? "disabled" : "")>
+            Dislike
+        </button> 
+    </div>
+    }
+</div>
+
+@section scripts{
+
+    <script src="~/js/likes.js"></script>
+}
+
